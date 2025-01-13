@@ -3,6 +3,7 @@
   
   <xsl:output method="text" indent="no"/>  
   <xsl:template match="/">
+  <!-- custom code -->
 const db = require('../db');
 const <xsl:value-of select="//bean/@name"/> = require('../models/<xsl:value-of select="//bean/@name"/>');
 

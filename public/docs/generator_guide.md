@@ -84,6 +84,7 @@ template="path/to/main.xsl">
 - Includes additional XSL files for modular template organization
 - Useful for breaking down complex templates into manageable pieces
 - Allows you to reuse common functions without having to re-write them
+- Includes are NOT Full XSLT files!, they are just snippets of code that are injected into the main template. Do not include the entire XSLT file in the include element.
 - Includes are injected into the your XSL template as long as there is the following comment somewhere within your template:
   ```html
   <!-- custom code -->
@@ -126,6 +127,10 @@ template="path/to/main.xsl">
 - `ref`: ID of the dependent template
 - `required`: Boolean value indicating if the dependent template is required for the current template to generate
 - Handy when you need to build a model and a service at the same time for the same set of tables.
+- The children section is optional and can be used to specify dependencies between templates.
+- This element is a pointer to another template in the generator.xml file. The template that is being pointed to must be defined in the generator.xml file before the template that is pointing to it.
+- The children section can be used to specify multiple dependencies.
+- The templates that are being pointed to must be valid templates and must work on their own in order to be included in the list of generated files. If they do not work on their own, they will not be included in the list of generated files.
 
 ## Example: Adding a New Template
 
