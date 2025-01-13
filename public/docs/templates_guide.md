@@ -1,8 +1,10 @@
 # Writing Custom XSL Templates - User Guide
 
-This guide is for writing custom XSL templates for the Code Generator. It is not a guide for writing XSL templates for other purposes. The point of this project is to make it easy to generate code for a database driven project/codebase. You can use the XSLT documentation from [W3Schools](https://www.w3schools.com/xml/xsl_intro.asp) or another resource as a reference, and is using standard XML and XSLT syntax. The parser is using the xml2js library to parse the XML data and the standard DOM parser to generate the code. You man need those for reference if you are not familiar with them.
+This guide is for writing custom XSL templates for the Code Generator. It is not a guide for writing XSL templates for other purposes. The point of this project is to make it easy to generate code for a database driven project/codebase. You can use the XSLT documentation from [W3Schools](https://www.w3schools.com/xml/xsl_intro.asp) or another resource as a reference, and is using standard XML and XSLT syntax. The parser is using the xml2js library to parse the XML data and the standard DOM parser to generate the code. You may need those for reference if you are not familiar with them.
 
 Think of the templates as stencils that represent code that will be generated after the parser has transformed the XML data into the language of your choice. XSLT is a way to transform XML data into other formats, such as HTML, PDF, or even code. We use the XSLT as a place holder for the table/model/column data that will be used to generate the code.
+
+XSLT is a dynamic language that you can use to loop through the model/table information to dynamically write out just about anything you want. You can also use conditional logic to write out different code based on the data. If you are not familiar with XSLT, you can use the W3Schools documentation as a reference. It will be very helpful to understand how to use the XSLT syntax.
 
 ## Available Model Data Structure
 
@@ -13,34 +15,32 @@ When writing templates, you have access to the following model structure:
 ```xml
 xml
 <root>
-<model>
-<name>YourModelName</name>
-<path>optional/base/path</path>
-<dbType>MSSQL|MySQL|PostgreSQL|Oracle|SQLite</dbType>
-<language>cfml|JavaScript|Laravel</language>
-<tables>
-<!-- One or more table definitions -->
-<table>
-<name>TableName</name>
-<path>optional/table/specific/path</path>
-<columns>
-<column>
-<name>columnName</name>
-<type>string|numeric|datetime|etc</type>
-<length>optional-length</length>
-<isPrimaryKey>true|false</isPrimaryKey>
-<isNullable>true|false</isNullable>
-<defaultValue>optional-default-value</defaultValue>
-</column>
-<!-- Additional columns -->
-</columns>
-</table>
-</tables>
-</model>
+   <model>
+      <name>YourModelName</name>
+      <path>optional/base/path</path>
+      <dbType>MSSQL|MySQL|PostgreSQL|Oracle|SQLite</dbType>
+      <language>cfml|JavaScript|Laravel</language>
+      <tables>
+      <!-- One or more table definitions -->
+      <table>
+         <name>TableName</name>
+         <path>optional/table/specific/path</path>
+         <columns>
+            <column>
+               <name>columnName</name>
+               <type>string|numeric|datetime|etc</type>
+               <length>optional-length</length>
+               <isPrimaryKey>true|false</isPrimaryKey>
+               <isNullable>true|false</isNullable>
+               <defaultValue>optional-default-value</defaultValue>
+            </column>
+            <!-- Additional columns -->
+         </columns>
+      </table>
+      </tables>
+   </model>
 </root>
 ```
-
-## Writing Templates
 
 ### Basic Template Structure
 
@@ -116,8 +116,7 @@ Template Examples
 <xsl:template match="/">
 	class <xsl:value-of select="//model/name"/> {
 		<xsl:for-each select="//tables/table/columns/column">
-		private <xsl:value-of select="name"/>;<xsl:text>
-		</xsl:text>
+		private <xsl:value-of select="name"/>;
 		</xsl:for-each>
 	}
 </xsl:template>
@@ -138,7 +137,7 @@ class YourModelName {
 ```xml
 <xsl:template match="/">
 	<xsl:for-each select="//columns/column">
-	public <xsl:value-of select="type"/><xsl:text> </xsl:text><xsl:value-of select="name"/> { get; set; }
+	public <xsl:value-of select="type"/> <xsl:value-of select="name"/> { get; set; }
 	</xsl:for-each>
 </xsl:template>
 ```

@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<generator version="1.0">
+<?xml version="1.0" encoding="utf-8"?><generator version="1.0">
   <category name="cfml" icon="file_type_cf.svg">
     <subcategory name="CF Model">
       <template id="cfml_bean" name="Bean" filetype="cfc" style="tag" template="cfml/bean.xsl">
-        <include file="cfml/bean/validate.xsl" />
-        <include file="cfml/bean/setMemento.xsl" />
-        <include file="cfml/bean/getset.xsl" />
-        <include file="cfml/bean/dump.xsl" />
+        <include file="cfml/bean/validate.xsl"/>
+        <include file="cfml/bean/setMemento.xsl"/>
+        <include file="cfml/bean/getset.xsl"/>
+        <include file="cfml/bean/dump.xsl"/>
         <description>Creates properties for each column, adds validation, dump and memento functions</description>
         <compatibility>
           <language>cfml</language>
@@ -17,13 +16,13 @@
 
     <subcategory name="CF DAO">
       <template id="cfml_dao" name="DAO" filetype="cfc" style="tag" template="cfml/dao.xsl">
-        <include file="cfml/dao/create.xsl" />
-        <include file="cfml/dao/read.xsl" />
-        <include file="cfml/dao/update.xsl" />
-        <include file="cfml/dao/delete.xsl" />
-        <include file="cfml/dao/exists.xsl" />
-        <include file="cfml/dao/save.xsl" />
-        <include file="cfml/dao/queryRowToStruct.xsl" />
+        <include file="cfml/dao/create.xsl"/>
+        <include file="cfml/dao/read.xsl"/>
+        <include file="cfml/dao/update.xsl"/>
+        <include file="cfml/dao/delete.xsl"/>
+        <include file="cfml/dao/exists.xsl"/>
+        <include file="cfml/dao/save.xsl"/>
+        <include file="cfml/dao/queryRowToStruct.xsl"/>
         <description>Creates data access object with CRUD functions as well as save and exists. Expects a Model.Bean to already exist</description>
         
         <compatibility>
@@ -37,8 +36,8 @@
       <template id="cfml_modern_service" name="Modern Service" filetype="cfc" style="tag" template="cfml/modern_service.xsl">
         <description>Creates a more modern DAO based Service derived from the table.</description>
         <children>
-          <template ref="cfml_bean" required="true" />
-          <template ref="cfml_dao" required="true" />
+          <template ref="cfml_bean" required="true"/>
+          <template ref="cfml_dao" required="true"/>
         </children>
         <compatibility>
           <language>cfml</language>
@@ -47,15 +46,15 @@
       </template>
 
       <template id="cfml_service" name="Service" filetype="cfc" style="tag" template="cfml/service.xsl">
-        <include file="cfml/service/createBean.xsl" />
-        <include file="cfml/service/getBean.xsl" />
-        <include file="cfml/service/getBeans.xsl" />
-        <include file="cfml/service/saveBean.xsl" />
-        <include file="cfml/service/deleteBean.xsl" />
+        <include file="cfml/service/createBean.xsl"/>
+        <include file="cfml/service/getBean.xsl"/>
+        <include file="cfml/service/getBeans.xsl"/>
+        <include file="cfml/service/saveBean.xsl"/>
+        <include file="cfml/service/deleteBean.xsl"/>
         <description>Creates an old school DAO/Gateway Bean Service based on the table, requires DAO and Beans to be created as well.</description>
         <children>
-          <template ref="cfml_bean" required="true" />
-          <template ref="cfml_dao" required="true" />
+          <template ref="cfml_bean" required="true"/>
+          <template ref="cfml_dao" required="true"/>
         </children>
         <compatibility>
           <language>cfml</language>
@@ -66,11 +65,11 @@
 
     <subcategory name="CF API">
       <template id="cfml_taffy_dao" name="Taffy-DAO" filetype="cfc" style="tag" template="cfml/taffy_dao.xsl">
-        <include file="cfml/taffy/dao/get.xsl" />
-        <include file="cfml/taffy/dao/put.xsl" />
-        <include file="cfml/taffy/dao/post.xsl" />
-        <include file="cfml/taffy/dao/delete.xsl" />
-        <include file="cfml/taffy/srv/utils.xsl" />
+        <include file="cfml/taffy/dao/get.xsl"/>
+        <include file="cfml/taffy/dao/put.xsl"/>
+        <include file="cfml/taffy/dao/post.xsl"/>
+        <include file="cfml/taffy/dao/delete.xsl"/>
+        <include file="cfml/taffy/srv/utils.xsl"/>
         <description>Creates Taffy.IO resources for the given tables. Produces Get,Put,Post,Delete verbs based on cfquery results.</description>
         <compatibility>
           <language>cfml</language>
@@ -79,14 +78,14 @@
       </template>
 
       <template id="cfml_taffy_service" name="Taffy-Service" filetype="cfc" style="tag" template="cfml/taffy_srv.xsl">
-        <include file="cfml/taffy/srv/get.xsl" />
-        <include file="cfml/taffy/srv/put.xsl" />
-        <include file="cfml/taffy/srv/post.xsl" />
-        <include file="cfml/taffy/srv/delete.xsl" />
-        <include file="cfml/taffy/srv/utils.xsl" />
+        <include file="cfml/taffy/srv/get.xsl"/>
+        <include file="cfml/taffy/srv/put.xsl"/>
+        <include file="cfml/taffy/srv/post.xsl"/>
+        <include file="cfml/taffy/srv/delete.xsl"/>
+        <include file="cfml/taffy/srv/utils.xsl"/>
         <description>Creates Taffy.IO resources for the given tables. Produces Get,Put,Post,Delete verbs based on service call results. Does not create the service.</description>
         <children>
-          <template ref="cfml_modern_service" required="true" />
+          <template ref="cfml_modern_service" required="true"/>
         </children>
         <compatibility>
           <language>cfml</language>
@@ -129,7 +128,7 @@
       <template id="js_dao" name="DAO" filetype="js" style="module" template="js/js_dao.xsl">
         <description>Creates a JavaScript data access object with CRUD functions for the selected table.</description>
         <children>
-          <template ref="js_model" required="true" />
+          <template ref="js_model" required="true"/>
         </children>
         <compatibility>
           <language>javascript</language>
@@ -142,8 +141,8 @@
       <template id="js_express_routes" name="ExpressRoutes" filetype="js" style="module" template="js/js_express_routes.xsl">
         <description>Creates Express.js routes for CRUD operations on the selected table.</description>
         <children>
-          <template ref="js_dao" required="true" />
-          <template ref="js_model" required="true" />
+          <template ref="js_dao" required="true"/>
+          <template ref="js_model" required="true"/>
         </children>
         <compatibility>
           <language>javascript</language>
@@ -179,7 +178,7 @@
       <template id="php_laravel_controller" name="Controller" filetype="php" style="class" template="php/php_laravel_api_controller.xsl">
         <description>Creates a Laravel API controller with CRUD operations for the selected table.</description>
         <children>
-          <template ref="php_laravel_model" required="true" />
+          <template ref="php_laravel_model" required="true"/>
         </children>
         <compatibility>
           <language>php</language>
@@ -192,7 +191,7 @@
       <template id="php_laravel_routes" name="ApiRoutes" filetype="php" style="script" template="php/php_laravel_api_routes.xsl">
         <description>Creates Laravel API routes for the selected tables.</description>
         <children>
-          <template ref="php_laravel_controller" required="true" />
+          <template ref="php_laravel_controller" required="true"/>
         </children>
         <compatibility>
           <language>php</language>
@@ -201,4 +200,16 @@
       </template>
     </subcategory>
   </category>
-</generator> 
+
+  <category name="frontend" icon="file_type_html.svg">
+    <subcategory name="data_tables">
+      <template name="basic_table" id="html_basic_table" filetype="html" style="tag" template="html/basic_dt_html.xsl">
+        <description>Creates a basic data table using DataTables.js</description>
+        <compatibility>
+          <language>html</language>
+          <dbType>mysql,mssql,postgresql</dbType>
+        </compatibility>
+      </template>
+      
+    </subcategory>
+</generator>
