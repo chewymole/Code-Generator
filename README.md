@@ -65,6 +65,9 @@ This project comes with an optional ColdFusion API that can return the database 
 
 ### Version 2 Improvements
 
+[2.1.4](https://github.com/chewymole/cfcGenerator/releases/tag/v2.1.4):
+Most notable improvement is bug fixes to template creator. And now if your XSL file does not parse correctly, a UI element is displayed to let you know. Minor updates to docs as well.
+
 [2.1.3](https://github.com/chewymole/cfcGenerator/releases/tag/v2.1.3):
 Most notable improvment here is the documentation viewer. This allows the end user to view the MD files that are in the /docs folder.
 
