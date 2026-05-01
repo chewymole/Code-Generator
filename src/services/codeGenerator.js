@@ -123,6 +123,7 @@ class CodeGenerator {
       );
 
       if (!processedTemplate.success) {
+        log("cg 126: processedTemplate error", processedTemplate);
         return GenerationResult.failure(processedTemplate.error);
       }
 
@@ -131,6 +132,7 @@ class CodeGenerator {
         processedTemplate.content
       );
       if (!processor.success) {
+        log("cg 135: processor error", processor);
         return GenerationResult.failure(processor.error);
       }
 
@@ -175,6 +177,7 @@ class CodeGenerator {
         tableXML.content,
         processor.content
       );
+      log("cg 180: transformResult", transformResult);
 
       return transformResult.success
         ? GenerationResult.success(transformResult.content)
@@ -255,25 +258,18 @@ class CodeGenerator {
 
     this.store.setGeneratedCodeFiles(mainFiles);
 
-    // Debug log before storing child files
-    log(
-      "Results with child files:",
-      results.filter((r) => r.success && r.childFiles?.length > 0)
-    );
+    // Clear all child files first
+    results
+      .filter((r) => r.success)
+      .forEach((r) => {
+        this.store.clearChildFiles(r.tableName);
+      });
 
-    // Store child files
+    // Then store new child files if they exist
     results
       .filter((r) => r.success && r.childFiles?.length > 0)
       .forEach((r) => {
-        log(`Processing child files for table ${r.tableName}:`, r.childFiles);
-
         r.childFiles.forEach((child) => {
-          log("Storing child file:", {
-            tableName: r.tableName,
-            templateId: child.templateId,
-            filename: child.filename,
-          });
-
           this.store.setGeneratedChildFile(
             r.tableName,
             child.templateId,
@@ -282,12 +278,6 @@ class CodeGenerator {
           );
         });
       });
-
-    // Debug log after storing
-    log("Store state after storing files:", {
-      mainFiles: this.store.generatedCodeFiles,
-      childFiles: this.store.generatedChildFiles,
-    });
   }
 }
 

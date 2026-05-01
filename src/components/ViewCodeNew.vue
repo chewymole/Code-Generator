@@ -175,6 +175,22 @@ const tables = computed(() => {
   const files = store.generatedCodeFiles;
   const tableMap = new Map();
 
+  if (files.length === 0) {
+    // Add a message or return a special structure to indicate no files
+    return [{
+      name: 'No Files',
+      files: [{
+        id: 'no-files',
+        type: 'main',
+        name: 'No code has been generated yet',
+        code: '',
+        success: true,
+          error: null,
+        },
+      ],
+    }];
+  }
+
   files.forEach((file) => {
     const tableName =
       typeof file.tableName === "object" ? file.tableName.name : file.tableName;

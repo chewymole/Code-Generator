@@ -1,5 +1,5 @@
 import { log, error } from "../utils/logger";
-
+import { SUPPORTED_LANGUAGES } from "@config/dataTypeConfig";
 export class FileResult {
   constructor(success, data = null, error = null) {
     this.success = success;
@@ -18,18 +18,11 @@ export class FileResult {
 
 export class FileManager {
   constructor() {
-    this.defaultExtension = "cfc";
-    this.validExtensions = new Set([
-      "cfc",
-      "cfm",
-      "js",
-      "vue",
-      "php",
-      "java",
-      "cs",
-      "py",
-      "ts",
-    ]);
+    this.defaultExtension = "txt";
+    this.validExtensions = new Set(
+      SUPPORTED_LANGUAGES.map((lang) => lang.extension)
+    );
+
     this.fileHandles = new Map(); // Store file handles for writing
     this.directoryHandle = null; // Store the xsl directory handle
   }

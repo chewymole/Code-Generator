@@ -56,3 +56,4 @@ coverage
 # Debug files
 debug
 .debug
+.bak
