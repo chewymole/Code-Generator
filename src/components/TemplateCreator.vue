@@ -24,6 +24,17 @@
         </div>
 
         <div>
+          <label class="block text-sm font-medium mb-1">Template ID</label>
+          <input 
+            v-model="template.id" 
+            type="text" 
+            class="w-full p-2 border rounded"
+            placeholder="e.g., laravel_model"
+            required
+          >
+        </div>
+
+        <div>
           <label class="block text-sm font-medium mb-1">Description</label>
           <textarea 
             v-model="template.description" 
@@ -159,6 +170,7 @@ const toast = useToast();
 const isLocalMode = computed(() => settingsStore.isLocalEnvironment);
 
 const template = ref({
+    id: '',
     name: '',
     description: '',
     language: '',
@@ -176,7 +188,8 @@ const availableLanguages = computed(() =>
   Object.entries(SUPPORTED_LANGUAGES).map(([id, lang]) => ({
     id: lang.value,
     name: lang.label || id.toUpperCase(),
-    icon: lang.icon || 'default.svg'
+    icon: lang.icon || 'default.svg',
+    extension: lang.extension
   }))
 );
 
@@ -195,7 +208,8 @@ const availableCategories = computed(() =>
 );
 
 const isValid = computed(() => {
-  return template.value.name &&
+  return template.value.id &&
+         template.value.name &&
          template.value.description &&
          template.value.language &&
          template.value.style &&
@@ -247,20 +261,67 @@ async function updateGeneratorXml(templateConfig, filename) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(currentXml, 'text/xml');
     
-    const templatesNode = doc.getElementsByTagName('templates')[0];
-    const newTemplate = doc.createElement('template');
+    // Find or create the templates node
+    let templatesNode = doc.getElementsByTagName('generator')[0];
+    if (!templatesNode) {
+      toast.error(`Failed to create template: root node not found`);
+      return;
+    }
     
-    // Set attributes
-    newTemplate.setAttribute('name', templateConfig.name);
-    newTemplate.setAttribute('description', templateConfig.description);
-    newTemplate.setAttribute('language', templateConfig.language);
-    newTemplate.setAttribute('style', templateConfig.style);
-    newTemplate.setAttribute('category', templateConfig.category);
-    newTemplate.setAttribute('subcategory', templateConfig.subcategory);
-    newTemplate.setAttribute('template', filename);
-    newTemplate.setAttribute('filetype', templateConfig.fileExtension);
+    // Find or create the category node
+    let categoryNode = null;
+    const categories = templatesNode.getElementsByTagName('category');
+    for (const cat of Array.from(categories)) {
+      if (cat.getAttribute('name') === templateConfig.category) {
+        categoryNode = cat;
+        break;
+      }
+    }
+
+    // Create category if it doesn't exist
+    if (!categoryNode) {
+      categoryNode = doc.createElement('category');
+      categoryNode.setAttribute('name', templateConfig.category);
+      templatesNode.appendChild(categoryNode);
+    }
+
+    // Create the subcategory node
+    let subcategoryNode = null;
+    const subcategories = categoryNode.getElementsByTagName('subcategory');
+    for (const subcat of Array.from(subcategories)) {
+      if (subcat.getAttribute('name') === templateConfig.subcategory) {
+        subcategoryNode = subcat;
+        break;
+      }
+    }
     
-    templatesNode.appendChild(newTemplate);
+    if (!subcategoryNode) {
+      subcategoryNode = doc.createElement('subcategory');
+      subcategoryNode.setAttribute('name', templateConfig.subcategory);
+      categoryNode.appendChild(subcategoryNode);
+    }
+
+    // Create the template node
+    const templateNode = doc.createElement('template');
+    templateNode.setAttribute('name', templateConfig.name);
+    templateNode.setAttribute('template', filename);
+    templateNode.setAttribute('filetype', templateConfig.fileExtension);
+    templateNode.setAttribute('id', templateConfig.id);
+    templateNode.setAttribute('description', templateConfig.description);
+
+    // Add includes if any
+    if (templateConfig.includes && templateConfig.includes.length > 0) {
+      const includesNode = doc.createElement('includes');
+      for (const include of templateConfig.includes) {
+        const includeNode = doc.createElement('include');
+        includeNode.setAttribute('file', include);
+        includesNode.appendChild(includeNode);
+      }
+      templateNode.appendChild(includesNode);
+    }
+
+    // Add the template to its category
+    subcategoryNode.appendChild(templateNode);
     
     // Serialize and save
     const serializer = new XMLSerializer();

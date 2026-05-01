@@ -283,6 +283,13 @@ export const useGeneratorStore = defineStore("generator", () => {
     return selectedTables.value;
   }
 
+  function clearChildFiles(tableName) {
+    const tableFiles = generatedChildFiles.value[tableName];
+    if (tableFiles) {
+      generatedChildFiles.value[tableName] = {};
+    }
+  }
+
   // Get table names
   const tableNames = computed(() => {
     return selectedTables.value.map((table) => table.name);
@@ -323,6 +330,7 @@ export const useGeneratorStore = defineStore("generator", () => {
     setSourceType,
     setSelectedModel,
     setGeneratedChildFile,
+    clearChildFiles,
 
     // Cache Operations
     cacheDatasourceTables,
